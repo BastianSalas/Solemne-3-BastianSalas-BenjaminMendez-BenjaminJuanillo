@@ -1,172 +1,247 @@
 import java.util.Scanner;
-
+import java.util.LinkedList;
 public class menu {
-    public static void main(String[] args) {
-        funciones funciones = new funciones();
-        Scanner scanner = new Scanner(System.in);
-        int goku;
 
-        do {
-            System.out.println("·········································································");
-            System.out.println("                                  Menú                                   ");
-            System.out.println("                                                                         ");
-            System.out.println("Gestión de Vuelos.......................................................1");
-            System.out.println("Gestión de Pasajeros....................................................2");
-            System.out.println("Proceso de Abordaje.....................................................3");
-            System.out.println("Salir...................................................................4");
-            System.out.println("                                                                         ");
-            System.out.println("·········································································");
-            System.out.print("Elija opción: ");
-            
-            goku = scanner.nextInt();
-            scanner.nextLine(); 
+    Scanner scanner = new Scanner(System.in);
+    listadoble listadoble = new listadoble();
+    listasimplevuelo listavuelo = new listasimplevuelo();
 
-            switch (goku) {
-                case 1:
-                    menuVuelos(funciones, scanner);
-                    break;
-                case 2:
-                    menuPasajeros(funciones, scanner);
-                    break;
-                case 3:
-                    System.out.print("Ingrese el nombre del vuelo: ");
-                    String nombreVuelo = scanner.nextLine();
-                    funciones.procesoAbordaje(nombreVuelo);
-                    break;
-                case 4:
-                    System.out.println("Saliendo...");
-                    break;
-                default:
-                    System.out.println("Opción inválida.");
-            }
-        } while (goku != 4);
-
-        scanner.close();
-    }
-
-    public static void menuVuelos(funciones funciones, Scanner scanner) {
-        int vegeta;
-
-        do {
+    public void Menu1() {
+        int inicio = 0;
+        int opcion1 = 0;
+        while (inicio == 0) {
             System.out.println("·········································································");
             System.out.println("                              Menú de Vuelos                             ");
             System.out.println("                                                                         ");
-            System.out.println("    Gestión de Vuelos:                                                   ");
             System.out.println("Crear Vuelo.............................................................1");
             System.out.println("Editar Vuelo............................................................2");
             System.out.println("Eliminar Vuelo..........................................................3");
-            System.out.println("Mostrar Vuelos..........................................................4");
-            System.out.println("Volver al menu principal................................................5");
+            System.out.println("Mostrar Lista de Vuelos.................................................4");
+            System.out.println("Salir...................................................................5");
             System.out.println("                                                                         ");
             System.out.println("·········································································");
-            System.out.print("Elija opción: ");
-
-            vegeta = scanner.nextInt();
-            scanner.nextLine();
-
-            switch (vegeta) {
+            int bandera = 0;
+            while (bandera == 0) {
+                try {
+                    System.out.print("Ingrese su opción: ");
+                    opcion1 = scanner.nextInt();
+                    scanner.nextLine();
+                    bandera = 1;
+                } catch (Exception e) {
+                    System.out.println("Ingrese una opción válida");
+                    scanner.nextLine();
+                }
+            }
+            switch (opcion1) {
                 case 1:
-                    System.out.print("Destino: ");
+                    System.out.println("·········································································");
+                    System.out.print("Ingrese Destino: ");
                     String destino = scanner.nextLine();
-                    System.out.print("Horario: ");
+                    System.out.print("Ingrese Horario: ");
                     String horario = scanner.nextLine();
-                    System.out.print("Nombre: ");
+                    System.out.print("Ingrese Nombre: ");
                     String nombre = scanner.nextLine();
-                    funciones.crearVuelo(destino, horario, nombre);
+                    System.out.print("Ingrese Capacidad: ");
+                    int capacidad = scanner.nextInt();
+                    scanner.nextLine(); // Limpia el buffer
+                    Vuelo vuelo = new Vuelo(destino, horario, nombre, capacidad);
+                    listavuelo.Agregar(vuelo);
+                    System.out.println("Vuelo Creado con éxito");
                     break;
                 case 2:
-                    System.out.print("Nombre del vuelo a editar: ");
-                    String nombreEditar = scanner.nextLine();
-                    System.out.print("Nuevo destino: ");
-                    String nuevoDestino = scanner.nextLine();
-                    System.out.print("Nuevo horario: ");
-                    String nuevoHorario = scanner.nextLine();
-                    funciones.editarVuelo(nombreEditar, nuevoDestino, nuevoHorario);
+                    System.out.println("·········································································");
+                    System.out.print("Ingrese el nombre del vuelo: ");
+                    nombre = scanner.nextLine();
+                    listavuelo.Editar(nombre);
                     break;
                 case 3:
-                    System.out.print("Nombre del vuelo a eliminar: ");
-                    String nombreEliminar = scanner.nextLine();
-                    funciones.eliminarVuelo(nombreEliminar);
+                    System.out.println("·········································································");
+                    System.out.print("Ingrese el nombre del vuelo: ");
+                    nombre = scanner.nextLine();
+                    listavuelo.Eliminar(nombre);
                     break;
                 case 4:
-                    funciones.mostrarVuelos();
+                    listavuelo.imprimirLista();
                     break;
                 case 5:
-                    System.out.println("Volviendo al menú principal...");
+                    inicio = 1;
                     break;
                 default:
-                    System.out.println("Opción inválida.");
+                    System.out.println("Ingrese una opción válida");
             }
-        } while (vegeta != 5);
+        }
     }
 
-    public static void menuPasajeros(funciones funciones, Scanner scanner) {
-        int gohan;
-
-        do {
-            System.out.println("Gestión de Pasajeros:");
-            System.out.println("1. Crear Pasajero");
-            System.out.println("2. Editar Pasajero");
-            System.out.println("3. Eliminar Pasajero");
-            System.out.println("4. Asociar Pasajero a Vuelo");
-            System.out.println("5. Mostrar Pasajeros de un Vuelo");
-            System.out.println("6. Volver");
-            System.out.print("Seleccione una opción: ");
-            gohan = scanner.nextInt();
-            scanner.nextLine();
-
-            switch (gohan) {
+    public void Menu2() {
+        int inicio = 0;
+        int opcion2 = 0;
+        while (inicio == 0) {
+            System.out.println("·········································································");
+            System.out.println("                            Menú de Pasajeros                            ");
+            System.out.println("                                                                         ");
+            System.out.println("Crear Pasajero..........................................................1");
+            System.out.println("Editar Pasajero.........................................................2");
+            System.out.println("Eliminar Pasajero.......................................................3");
+            System.out.println("Asociar Pasajero a Vuelo................................................4");
+            System.out.println("Mostrar Lista de Pasajeros..............................................5");
+            System.out.println("Salir...................................................................6");
+            System.out.println("                                                                         ");
+            System.out.println("·········································································");
+            int bandera = 0;
+            while (bandera == 0) {
+                try {
+                    System.out.print("Ingrese su opción: ");
+                    opcion2 = scanner.nextInt();
+                    scanner.nextLine();
+                    bandera = 1;
+                } catch (Exception e) {
+                    System.out.println("Ingrese una opción válida");
+                    scanner.nextLine();
+                }
+            }
+            switch (opcion2) {
                 case 1:
-                    System.out.print("ID: ");
-                    int id = scanner.nextInt();
-                    scanner.nextLine();
-                    System.out.print("Nombre: ");
+                    System.out.println("·········································································");
+                    System.out.print("Ingrese ID del pasajero: ");
+                    String id = scanner.nextLine();
+                    System.out.print("Ingrese nombre del pasajero: ");
                     String nombre = scanner.nextLine();
-                    System.out.print("Nacionalidad: ");
+                    System.out.print("Ingrese nacionalidad del pasajero: ");
                     String nacionalidad = scanner.nextLine();
-                    System.out.print("Asiento: ");
-                    int asiento = scanner.nextInt();
-                    scanner.nextLine();
-                    funciones.crearPasajero(id, nombre, nacionalidad, asiento);
+                    System.out.print("Ingrese número de asiento del pasajero: ");
+                    String asiento = scanner.nextLine();
+                    Pasajero pasajero = new Pasajero(id, nombre, nacionalidad, asiento);
+                    listadoble.AgregarPasajero(pasajero);
+                    System.out.println("Pasajero Creado con éxito");
                     break;
                 case 2:
-                    System.out.print("ID del pasajero a editar: ");
-                    int idEditar = scanner.nextInt();
-                    scanner.nextLine();
-                    System.out.print("Nuevo nombre: ");
-                    String nuevoNombre = scanner.nextLine();
-                    System.out.print("Nueva nacionalidad: ");
-                    String nuevaNacionalidad = scanner.nextLine();
-                    System.out.print("Nuevo asiento: ");
-                    int nuevoAsiento = scanner.nextInt();
-                    scanner.nextLine();
-                    funciones.editarPasajero(idEditar, nuevoNombre, nuevaNacionalidad, nuevoAsiento);
+                    System.out.println("·········································································");
+                    System.out.print("Ingrese el ID del pasajero: ");
+                    id = scanner.nextLine();
+                    listadoble.Editar(id);
                     break;
                 case 3:
-                    System.out.print("ID del pasajero a eliminar: ");
-                    int idEliminar = scanner.nextInt();
-                    scanner.nextLine();
-                    funciones.eliminarPasajero(idEliminar);
+                    System.out.println("·········································································");
+                    System.out.print("Ingrese el ID del pasajero: ");
+                    id = scanner.nextLine();
+                    listadoble.EliminarPasajero(id);
                     break;
                 case 4:
-                    System.out.print("ID del pasajero: ");
-                    int idPasajero = scanner.nextInt();
-                    scanner.nextLine();
-                    System.out.print("Nombre del vuelo: ");
-                    String nombreVuelo = scanner.nextLine();
-                    funciones.asociarPasajeroAVuelo(idPasajero, nombreVuelo);
+                    System.out.println("·········································································");
+                    System.out.print("Ingrese el ID del pasajero: ");
+                    String buscarid = scanner.nextLine();
+                    nodo buscado = listadoble.Buscar(buscarid);
+                    if (buscado != null) {
+                        System.out.print("Ingrese el nombre del vuelo: ");
+                        String nombrevuelo = scanner.nextLine();
+                        nodovuelo vueloEncontrado = listavuelo.Buscar(nombrevuelo);
+                        if (vueloEncontrado != null) {
+                            Vuelo vuelo = vueloEncontrado.getVuelo();
+                            if (!vuelo.ContienePasajero(buscarid)) {
+                                vuelo.AsociarPasajero((Pasajero) buscado.getPasajero());
+                            } else {
+                                System.out.println("El pasajero ya está asociado a este vuelo");
+                            }
+                        } else {
+                            System.out.println("Vuelo no encontrado");
+                        }
+                    } else {
+                        System.out.println("Pasajero no encontrado");
+                    }
                     break;
                 case 5:
-                    System.out.print("Nombre del vuelo: ");
-                    String vueloNombre = scanner.nextLine();
-                    funciones.mostrarPasajerosDeVuelo(vueloNombre);
+                    System.out.println("·········································································");
+                    System.out.print("Ingrese nombre del vuelo: ");
+                    String nombrevuelo = scanner.nextLine();
+                    nodovuelo vuelo = listavuelo.Buscar(nombrevuelo);
+                    if (vuelo != null) {
+                        vuelo.getVuelo().imprimirListaPasajeros();
+                    } else {
+                        System.out.println("Vuelo no encontrado");
+                    }
                     break;
                 case 6:
-                    System.out.println("Volviendo al menú principal...");
+                    inicio = 1;
                     break;
                 default:
-                    System.out.println("Opción inválida.");
+                    System.out.println("Ingrese una opción válida");
             }
-        } while (gohan != 6);
+        }
+    }
+
+    public void Menu3() {
+        System.out.println("·········································································");
+        System.out.print("Ingrese el nombre del vuelo: ");
+        String nombrevuelo = scanner.nextLine();
+        nodovuelo vuelo = listavuelo.Buscar(nombrevuelo);
+        if (vuelo != null) {
+            vuelo.getVuelo().Abordaje();
+        } else {
+            System.out.println("Vuelo no encontrado");
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner leer = new Scanner(System.in);
+        menu Menus = new menu();
+        int inicio = 0;
+        int opcion = 0;
+        while (inicio == 0) {
+            System.out.println("·········································································");
+            System.out.println("                                Aerolínea                                ");
+            System.out.println("                                                                         ");
+            System.out.println("Menú Vuelo..............................................................1");
+            System.out.println("Menú Pasajeros..........................................................2");
+            System.out.println("Abordaje................................................................3");
+            System.out.println("Salir...................................................................4");
+            System.out.println("                                                                         ");
+            System.out.println("·········································································");
+            int bandera = 0;
+            while (bandera == 0) {
+                try {
+                    System.out.print("Ingrese su opción: ");
+                    opcion = leer.nextInt();
+                    leer.nextLine();
+                    bandera = 1;
+                } catch (Exception e) {
+                    System.out.println("Ingrese una opción válida");
+                    leer.nextLine();
+                }
+            }
+            switch (opcion) {
+                case 1:
+                    Menus.Menu1();
+                    break;
+                case 2:
+                    Menus.Menu2();
+                    break;
+                case 3:
+                    Menus.Menu3();
+                    break;
+                case 4:
+                    System.out.println("Adiós");
+                    inicio = 1;
+                    break;
+                default:
+                    System.out.println("Ingrese una opción válida");
+            }
+        }
+    }
+}
+class colaabordaje {
+
+    //Declaramos la cola que contendra objetos Pasajero
+    private final LinkedList<Pasajero> cola = new LinkedList<>();
+
+    //Meotodo para agregar un pasajero al final 
+    public void agregar(Pasajero pasajero) {
+        cola.addLast(pasajero); 
+    }
+
+    //Metodo para mostrar los pasajeros en la cola
+    public void mostrar() {
+        for (Pasajero pasajero : cola) {
+            System.out.println("Pasajero: " + pasajero.Mostrar());
+        }
     }
 }
